@@ -1,0 +1,11 @@
+{
+  "name": "thap-trai-thanh-tinh",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "PWA nhắc ngày ăn chay Thập Trai theo âm lịch Việt Nam",
+  "scripts": {
+    "start": "python -m http.server 5173",
+    "test": "node --test tests/lunar.test.mjs"
+  }
+}

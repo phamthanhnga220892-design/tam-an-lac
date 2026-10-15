@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta content="mobile_tab" name="shell-type"/>
+<title>Thập Trai Thanh Tịnh - Hôm Nay</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-highest": "#dae2fd",
+            "on-surface-variant": "#3f4850",
+            "on-error-container": "#93000a",
+            "on-primary-container": "#fdfcff",
+            "tertiary-fixed-dim": "#ffafd3",
+            "inverse-surface": "#283044",
+            "error-container": "#ffdad6",
+            "inverse-on-surface": "#eef0ff",
+            "primary-fixed": "#cce5ff",
+            "primary-container": "#007bb9",
+            "on-surface": "#131b2e",
+            "inverse-primary": "#93ccff",
+            "error": "#ba1a1a",
+            "surface-tint": "#006398",
+            "tertiary": "#a12e70",
+            "secondary-fixed-dim": "#ffb95f",
+            "tertiary-container": "#c0488a",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "on-background": "#131b2e",
+            "on-primary": "#ffffff",
+            "tertiary-fixed": "#ffd8e7",
+            "on-tertiary-fixed": "#3d0026",
+            "on-secondary": "#ffffff",
+            "surface-bright": "#faf8ff",
+            "secondary-container": "#fea619",
+            "outline-variant": "#bfc7d2",
+            "on-tertiary-fixed-variant": "#85145a",
+            "on-error": "#ffffff",
+            "surface-container-high": "#e2e7ff",
+            "on-secondary-container": "#684000",
+            "surface-container": "#eaedff",
+            "surface": "#faf8ff",
+            "background": "#faf8ff",
+            "on-tertiary-container": "#fffbff",
+            "surface-variant": "#dae2fd",
+            "secondary": "#855300",
+            "on-primary-fixed-variant": "#004b73",
+            "on-primary-fixed": "#001d31",
+            "on-secondary-fixed": "#2a1700",
+            "primary-fixed-dim": "#93ccff",
+            "surface-container-low": "#f2f3ff",
+            "on-secondary-fixed-variant": "#653e00",
+            "outline": "#707881",
+            "surface-dim": "#d2d9f4",
+            "secondary-fixed": "#ffddb8",
+            "primary": "#006194"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "margin": "1.25rem",
+            "space-sm": "0.5rem",
+            "margin-mobile": "1rem",
+            "gutter": "1rem",
+            "space-xl": "2.25rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "0.75rem"
+          },
+          fontFamily: {
+            "body-md": ["Be Vietnam Pro", "sans-serif"],
+            "body-sm": ["Be Vietnam Pro", "sans-serif"],
+            "label-md": ["Be Vietnam Pro", "sans-serif"],
+            "body-lg": ["Be Vietnam Pro", "sans-serif"],
+            "display-lg-mobile": ["Newsreader", "serif"],
+            "label-sm": ["Be Vietnam Pro", "sans-serif"],
+            "headline-sm": ["Newsreader", "serif"],
+            "display-lg": ["Newsreader", "serif"],
+            "headline-lg": ["Newsreader", "serif"],
+            "headline-md": ["Newsreader", "serif"],
+            "label-lg": ["Be Vietnam Pro", "sans-serif"]
+          },
+          fontSize: {
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "500" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "display-lg-mobile": ["30px", { "lineHeight": "38px", "fontWeight": "400" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+            "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "500" }],
+            "headline-md": ["22px", { "lineHeight": "30px", "fontWeight": "500" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      html, body {
+        width: 100%;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        overscroll-behavior-y: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      .pt-safe {
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen relative antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Header App Bar -->
+<header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,97,148,0.06)] border-b border-outline-variant/30">
+<div class="h-16 px-margin flex items-center justify-between max-w-[440px] mx-auto">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-primary shadow-sm border border-primary/20">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-primary tracking-tight font-semibold">Thập Trai Thanh Tịnh</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Hôm Nay</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[19px]">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Container -->
+<main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface max-w-[440px] mx-auto min-h-screen">
+<!-- Background: Buddha Image https://lh3.googleusercontent.com/aida-public/AB6AXuDnIbocyb2pqcT-O4Xhkper8RrY3_BrjW74tavD3KKJ4LVhbkb4OY3rSAPX31N8JUEvF1P9ega47XsgiYpfNNM5F6i7Y9sHbW98K3kkttJ3yU3-BMZ25YDuTsaacLka1XiXFbZNXfjZ_dFVjfppFbqoSJacyTPFEPHYKga2TsPN6GARiPhZlQ-bCErBg_haDSST9WY7KHDGspyPuw7VzsDMtSOWVFmozOeMZcmMUbWTdamrcnwuM9kvl5-LnCLce-0pOw with Spiritual Aura -->
+<div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden flex items-start justify-center">
+<img alt="Tôn tượng Đức Phật Dược Sư" class="w-full max-w-[440px] h-full object-cover object-top opacity-20 transform scale-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnIbocyb2pqcT-O4Xhkper8RrY3_BrjW74tavD3KKJ4LVhbkb4OY3rSAPX31N8JUEvF1P9ega47XsgiYpfNNM5F6i7Y9sHbW98K3kkttJ3yU3-BMZ25YDuTsaacLka1XiXFbZNXfjZ_dFVjfppFbqoSJacyTPFEPHYKga2TsPN6GARiPhZlQ-bCErBg_haDSST9WY7KHDGspyPuw7VzsDMtSOWVFmozOeMZcmMUbWTdamrcnwuM9kvl5-LnCLce-0pOw"/>
+<div class="absolute inset-0 bg-gradient-to-b from-surface/60 via-surface/85 to-surface"></div>
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full bg-primary-fixed/20 blur-3xl"></div>
+</div>
+<div class="flex flex-col w-full relative pb-8 overflow-hidden">
+<div class="flex flex-col gap-space-md px-margin pt-4">
+<!-- Notification Banner -->
+<div class="w-full rounded-xl p-space-sm bg-surface-container-lowest/80 backdrop-blur-md shadow-sm border border-outline-variant/30 flex items-center justify-between gap-space-sm transition-all duration-300" id="noti-banner">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0 text-secondary">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="font-label-md text-label-md text-on-surface font-semibold truncate">Nhắc nhở ngày trai giới</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Bật thông báo để không lỡ thời khắc thanh tịnh</p>
+</div>
+</div>
+<div class="flex items-center gap-1 shrink-0">
+<button class="px-3 py-1 rounded-full bg-primary text-on-primary font-label-sm text-label-sm shadow-sm transition active:scale-95" id="btn-allow-noti">
+              Bật ngay
+            </button>
+<button class="p-1 rounded-full text-outline hover:text-on-surface transition" id="btn-dismiss-noti">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Date Header & Auspicious Details -->
+<div class="flex flex-col pt-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary tracking-wider uppercase font-semibold">Thứ Tư, 15/10/2026 Dương Lịch</span>
+<span class="font-label-sm text-label-sm px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-medium">Giờ Hoàng Đạo</span>
+</div>
+<div class="flex items-baseline gap-space-xs mt-0.5">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Mùng 05</h1>
+<span class="font-headline-sm text-headline-sm text-on-surface-variant">tháng Chín, Năm Bính Ngọ</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">Ngày Bính Dần • Tiết Hàn Lộ • Trực Trừ</p>
+</div>
+<!-- Central Focus Card -->
+<div class="w-full rounded-2xl bg-surface-container-lowest/85 backdrop-blur-xl shadow-md border border-outline-variant/30 p-space-md flex flex-col gap-space-md relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-36 h-36 rounded-full bg-primary-fixed/40 blur-2xl pointer-events-none"></div>
+<!-- Vegetarian Status Badge -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">filter_vintage</span>
+<span class="font-label-lg text-label-lg text-on-surface-variant font-medium">Lịch Thập Trai</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+              Ngày Bình Thường
+            </span>
+</div>
+<!-- Main Status Graphic & Heading -->
+<div class="flex flex-col items-center text-center py-1">
+<div class="w-16 h-16 rounded-full bg-surface-container-low flex items-center justify-center shadow-inner mb-2 relative">
+<span class="material-symbols-outlined text-[32px] text-primary">eco</span>
+<div class="absolute inset-0 rounded-full bg-primary/10 animate-ping pointer-events-none opacity-40"></div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Hôm nay không phải ngày trai</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 max-w-[280px]">
+              Tâm luôn giữ giới, lòng nhẹ như mây. Giữ tâm niệm thiện lành trong từng hành động.
+            </p>
+</div>
+<!-- Countdown Banner -->
+<div class="w-full rounded-xl bg-surface-container-low/90 p-space-sm flex items-center gap-space-sm border border-outline-variant/20">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">hourglass_top</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wide text-secondary font-bold">Ngày chay sắp tới</span>
+<span class="px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[10px] font-semibold">Còn 3 ngày</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">
+                Mùng 8 tháng 9 ÂL • Thứ Bảy, 18/10
+              </span>
+</div>
+</div>
+<!-- Action Button & Mini Counter -->
+<div class="flex flex-col gap-space-xs pt-1">
+<button class="w-full h-12 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-label-lg text-label-lg shadow-md flex items-center justify-center gap-space-xs transition active:scale-[0.98]" id="btn-trai-gioi">
+<span class="material-symbols-outlined text-[20px]" id="btn-icon">check_circle</span>
+<span id="btn-text">Tôi đã ăn chay hôm nay</span>
+</button>
+<div class="flex items-center justify-between px-space-xs pt-1 text-on-surface-variant">
+<span class="font-body-sm text-body-sm">Tiến độ tháng 9 Âm Lịch</span>
+<span class="font-label-md text-label-md text-primary font-bold" id="trai-counter">Đã hoàn tất 2 / 10 ngày</span>
+</div>
+</div>
+</div>
+<!-- 10 Days Progress Grid -->
+<div class="w-full rounded-2xl bg-surface-container-lowest/80 backdrop-blur-xl shadow-sm border border-outline-variant/30 p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">psychology_alt</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">10 Ngày Thập Trai</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Tháng 9 Bính Ngọ</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Mười ngày trì trai diệt trừ phiền não, tiêu tai tăng phước theo kinh Dược Sư &amp; Địa Tạng.
+          </p>
+<!-- 10 Gem Nodes Matrix -->
+<div class="grid grid-cols-5 gap-2 pt-2">
+<!-- Node 1: Completed -->
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-low border border-outline-variant/20 relative">
+<span class="font-label-sm text-label-sm text-primary font-bold">Mùng 1</span>
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center my-1 shadow-sm">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-label-sm text-[10px] text-outline">11/10</span>
+</div>
+<!-- Node 8: Next Up (Highlighted glow) -->
+<div class="flex flex-col items-center p-2 rounded-xl bg-secondary-fixed/50 border border-secondary/30 relative shadow-sm">
+<div class="absolute -top-1 right-1 w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></div>
+<span class="font-label-sm text-label-sm text-on-secondary-fixed font-bold">Mùng 8</span>
+<div class="w-7 h-7 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center my-1">
+<span class="material-symbols-outlined text-[16px]">notifications</span>
+</div>
+<span class="font-label-sm text-[10px] text-on-secondary-fixed-variant">18/10</span>
+</div>
+<!-- Node 14 -->
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/20 shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface font-medium">14</span>
+<div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center my-1">
+<span class="material-symbols-outlined text-[15px]">spa</span>
+</div>
+<span class="font-label-sm text-[10px] text-outline">24/10</span>
+</div>
+<!-- Node 15: Rằm -->
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-lowest border border-tertiary-fixed-dim/40 shadow-sm">
+<span class="font-label-sm text-label-sm text-tertiary font-bold">15 (Rằm)</span>
+<div class="w-7 h-7 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center my-1">
+<span class="material-symbols-outlined text-[15px]">brightness_7</span>
+</div>
+<span class="font-label-sm text-[10px] text-outline">25/10</span>
+</div>
+<!-- Node 18 -->
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/20 shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface font-medium">18</span>
+<div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center my-1">
+<span class="material-symbols-outlined text-[15px]">spa</span>
+</div>
+<span class="font-label-sm text-[10px] text-outline">28/10</span>
+</div>
+<!-- Node 23 -->
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/20 shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface font-medium">23</span>
+<div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center my-1">
+<span class="material-symbols-outlined text-[15px]">spa</span>
+</div>
+<span class="font-label-sm text-[10px] text-outline">02/11</span>
+</div>
+<!-- Node 24 -->
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/20 shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface font-medium">24</span>
+<div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center my-1">
+<span class="material-symbols-outlined text-[15px]">spa</span>
+</div>
+<span class="font-label-sm text-[10px] text-outline">03/11</span>
+</div>
+<!-- Node 28 -->
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/20 shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface font-medium">28</span>
+<div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center my-1">
+<span class="material-symbols-outlined text-[15px]">spa</span>
+</div>
+<span class="font-label-sm text-[10px] text-outline">07/11</span>
+</div>
+<!-- Node 29 -->
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/20 shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface font-medium">29</span>
+<div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center my-1">
+<span class="material-symbols-outlined text-[15px]">spa</span>
+</div>
+<span class="font-label-sm text-[10px] text-outline">08/11</span>
+</div>
+<!-- Node 30 -->
+<div class="flex flex-col items-center p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/20 shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface font-medium">30</span>
+<div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center my-1">
+<span class="material-symbols-outlined text-[15px]">circle</span>
+</div>
+<span class="font-label-sm text-[10px] text-outline">09/11</span>
+</div>
+</div>
+</div>
+<!-- Medicine Buddha Mindful Verse -->
+<div class="w-full rounded-2xl bg-gradient-to-br from-primary-fixed/30 via-surface-container-lowest to-surface-container-low p-space-md shadow-sm border border-outline-variant/30 flex flex-col gap-space-xs relative overflow-hidden">
+<div class="flex items-center gap-space-xs text-primary">
+<span class="material-symbols-outlined text-[20px]">self_improvement</span>
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Tịnh Khẩu • Quán Chiếu</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-primary font-medium italic mt-1">
+            “Nam Mô Dược Sư Lưu Ly Quang Vương Phật”
+          </p>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Nguyện cho thân thể an khang, tật bệnh tiêu trừ, tâm trí sáng suốt như ngọc lưu ly, gieo mầm từ bi đến muôn loài trong từng bữa ăn thanh tịnh.
+          </p>
+<!-- Bell Chime Mini Action -->
+<div class="flex items-center justify-between pt-space-xs mt-1">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm shadow-sm transition active:scale-95" id="btn-bell">
+<span class="material-symbols-outlined text-[16px]">campaign</span>
+<span>Thỉnh 1 tiếng chuông</span>
+</button>
+<span class="font-label-sm text-label-sm text-secondary opacity-0 transition-opacity duration-300 font-medium" id="bell-feedback">Boong... Tâm an định</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Tab Navigation -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl border-t border-outline-variant/30 shadow-[0_-2px_16px_rgba(0,97,148,0.08)]">
+<div class="flex justify-around items-center h-16 max-w-[440px] mx-auto px-space-xs">
+<a class="flex-1 flex flex-col items-center justify-center min-h-[44px] min-w-[44px] py-1 text-primary font-semibold transition-colors" data-path="hom-nay" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">spa</span>
+<span class="font-label-sm text-label-sm mt-0.5">Hôm nay</span>
+</a>
+<a class="flex-1 flex flex-col items-center justify-center min-h-[44px] min-w-[44px] py-1 text-on-surface-variant transition-colors hover:text-primary" data-path="lich-am" href="#">
+<span class="material-symbols-outlined text-[24px]">calendar_month</span>
+<span class="font-label-sm text-label-sm mt-0.5 font-medium">Lịch âm</span>
+</a>
+<a class="flex-1 flex flex-col items-center justify-center min-h-[44px] min-w-[44px] py-1 text-on-surface-variant transition-colors hover:text-primary" data-path="su-kien-phat-phap" href="#">
+<span class="material-symbols-outlined text-[24px]">notifications_active</span>
+<span class="font-label-sm text-label-sm mt-0.5 font-medium">Sự kiện</span>
+</a>
+<a class="flex-1 flex flex-col items-center justify-center min-h-[44px] min-w-[44px] py-1 text-on-surface-variant transition-colors hover:text-primary" data-path="cai-dat-nhac" href="#">
+<span class="material-symbols-outlined text-[24px]">tune</span>
+<span class="font-label-sm text-label-sm mt-0.5 font-medium">Cài đặt</span>
+</a>
+</div>
+</nav>
+<script>
+    (function() {
+      // Notification banner interactions
+      var banner = document.getElementById('noti-banner');
+      var btnAllow = document.getElementById('btn-allow-noti');
+      var btnDismiss = document.getElementById('btn-dismiss-noti');
+
+      if (btnAllow && banner) {
+        btnAllow.addEventListener('click', function() {
+          btnAllow.innerText = 'Đã Bật ✓';
+          btnAllow.classList.remove('bg-primary');
+          btnAllow.classList.add('bg-secondary');
+          setTimeout(function() {
+            banner.style.opacity = '0';
+            banner.style.transform = 'translateY(-10px)';
+            setTimeout(function() { banner.remove(); }, 300);
+          }, 1000);
+        });
+      }
+
+      if (btnDismiss && banner) {
+        btnDismiss.addEventListener('click', function() {
+          banner.style.opacity = '0';
+          banner.style.transform = 'translateY(-10px)';
+          setTimeout(function() { banner.remove(); }, 300);
+        });
+      }
+
+      // Vegetarian Log Interaction
+      var btnTrai = document.getElementById('btn-trai-gioi');
+      var btnIcon = document.getElementById('btn-icon');
+      var btnText = document.getElementById('btn-text');
+      var counterText = document.getElementById('trai-counter');
+      var isDone = false;
+
+      if (btnTrai) {
+        btnTrai.addEventListener('click', function() {
+          isDone = !isDone;
+          if (isDone) {
+            btnTrai.classList.remove('from-primary', 'to-primary-container');
+            btnTrai.classList.add('from-secondary', 'to-secondary-container');
+            btnIcon.innerText = 'task_alt';
+            btnText.innerText = 'Đã ghi nhận công đức ăn chay hôm nay';
+            if (counterText) {
+              counterText.innerText = 'Đã hoàn tất 3 / 10 ngày (Công đức viên mãn)';
+            }
+          } else {
+            btnTrai.classList.remove('from-secondary', 'to-secondary-container');
+            btnTrai.classList.add('from-primary', 'to-primary-container');
+            btnIcon.innerText = 'check_circle';
+            btnText.innerText = 'Tôi đã ăn chay hôm nay';
+            if (counterText) {
+              counterText.innerText = 'Đã hoàn tất 2 / 10 ngày';
+            }
+          }
+        });
+      }
+
+      // Bell chime interactive feedback
+      var btnBell = document.getElementById('btn-bell');
+      var bellFeedback = document.getElementById('bell-feedback');
+      if (btnBell && bellFeedback) {
+        btnBell.addEventListener('click', function() {
+          bellFeedback.style.opacity = '1';
+          setTimeout(function() {
+            bellFeedback.style.opacity = '0';
+          }, 2200);
+        });
+      }
+    })();
+  </script>
+</body></html>
