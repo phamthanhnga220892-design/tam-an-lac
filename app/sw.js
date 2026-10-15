@@ -1,5 +1,5 @@
-// Service Worker: chạy offline + nhắc nền (periodic sync) + xử lý bấm thông báo.
-const VERSION = 'v1.0.0';
+// Service Worker: chạy offline + nhắc nền (Web Push, periodic sync) + xử lý bấm thông báo.
+const VERSION = 'v1.1.0';
 const CORE = `thaptrai-core-${VERSION}`;
 const RUNTIME = 'thaptrai-runtime';
 const SCHEDULE = 'thaptrai-schedule';
@@ -98,6 +98,36 @@ async function checkDue() {
   }
   await cache.put('shown.json', new Response(JSON.stringify(shown)));
 }
+
+// Web Push từ máy chủ (/api/dispatch): nhắc đúng giờ kể cả khi app đã đóng
+self.addEventListener('push', (e) => {
+  let n = {};
+  try {
+    n = e.data ? e.data.json() : {};
+  } catch {
+    n = { body: e.data && e.data.text() };
+  }
+  e.waitUntil(
+    (async () => {
+      await self.registration.showNotification(n.title || 'Thập Trai Thanh Tịnh', {
+        body: n.body || '',
+        tag: n.tag || 'push',
+        icon: 'icons/icon-192.png',
+        badge: 'icons/icon-192.png',
+        data: { target: n.target },
+        actions: n.fasting ? [{ action: 'done', title: 'Đã ăn chay' }] : [],
+      });
+      // Đánh dấu đã hiện để periodic sync không nhắc lại
+      if (n.tag) {
+        const cache = await caches.open(SCHEDULE);
+        const r = await cache.match('shown.json');
+        const shown = r ? await r.json() : {};
+        shown[n.tag] = Date.now();
+        await cache.put('shown.json', new Response(JSON.stringify(shown)));
+      }
+    })(),
+  );
+});
 
 // R9: bấm "Đã ăn chay" ngay trên thông báo → mở app và ghi nhận
 self.addEventListener('notificationclick', (e) => {

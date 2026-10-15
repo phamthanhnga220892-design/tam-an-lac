@@ -130,6 +130,7 @@ export async function syncSchedule() {
   }
   updateBadge();
   if (permissionState() !== 'granted') return;
+  syncPush(list);
 
   const now = Date.now();
   const state = getState();
@@ -161,6 +162,71 @@ function pruneNotified() {
       for (const k of Object.keys(s.notified)) if (s.notified[k] < limit) delete s.notified[k];
     });
   }
+}
+
+// ---------- Web Push: máy chủ gửi đúng giờ cả khi app đã đóng (iOS 16.4+ đã thêm vào MH chính, Android) ----------
+const VAPID_PUBLIC_KEY = 'BG6FpKMwADlQYPg0FrXFkpkR1I0sPHvG3wL7662XEbVl4TwUXe8KE0nQSZgocUnbGfJ_8B_VrR3x03ifqiw52Ts';
+const PUSH_ENDPOINT_KEY = 'thaptrai.pushEndpoint';
+
+function base64UrlToBytes(s) {
+  const b64 = (s + '='.repeat((4 - (s.length % 4)) % 4)).replace(/-/g, '+').replace(/_/g, '/');
+  return Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+}
+
+export function pushSupported() {
+  return 'serviceWorker' in navigator && 'PushManager' in window;
+}
+
+let pushStatus = { ok: false, next: null, error: null };
+export const getPushStatus = () => pushStatus;
+
+/** Đăng ký push (nếu chưa) rồi gửi lịch nhắc lên máy chủ */
+export async function syncPush(list = upcomingNotifications(new Date(), 45)) {
+  if (!pushSupported() || permissionState() !== 'granted') return null;
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: base64UrlToBytes(VAPID_PUBLIC_KEY) });
+    const json = sub.toJSON();
+    const test = getState().pushTest;
+    const schedule = test && test > Date.now() - 6 * 3600 * 1000 ? [...list, pushTestItem(test)] : list;
+    let replaces = null;
+    try {
+      replaces = localStorage.getItem(PUSH_ENDPOINT_KEY);
+    } catch {}
+    const res = await fetch('api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subscription: json, schedule, replaces: replaces !== json.endpoint ? replaces : null }),
+    });
+    if (!res.ok) throw new Error(`Máy chủ trả lỗi ${res.status}`);
+    const out = await res.json();
+    try {
+      localStorage.setItem(PUSH_ENDPOINT_KEY, json.endpoint);
+    } catch {}
+    pushStatus = { ok: true, next: out.next, error: null };
+  } catch (err) {
+    pushStatus = { ok: false, next: null, error: err.message };
+  }
+  return pushStatus;
+}
+
+function pushTestItem(fireAt) {
+  const t = new Date(fireAt);
+  return {
+    id: `test|${fireAt}`,
+    fireAt,
+    target: toKey(t),
+    fasting: false,
+    title: 'Thử nhắc nền 🌿',
+    body: `Máy chủ gửi lúc ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')} — nhắc ngày chay sẽ đến như thế này kể cả khi app đã đóng.`,
+  };
+}
+
+/** Hẹn một thông báo thử từ máy chủ sau `minutes` phút (để kiểm tra khi đóng app) */
+export async function schedulePushTest(minutes = 2) {
+  update((s) => (s.pushTest = Date.now() + minutes * 60 * 1000));
+  return syncPush();
 }
 
 export async function registerPeriodicSync() {

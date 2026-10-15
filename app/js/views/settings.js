@@ -2,7 +2,7 @@
 import { getState, update, uid, exportJSON, importJSON } from '../store.js';
 import { jdToDate, lunarMonthName, canChiYear } from '../lunar.js';
 import { FASTING_MODES, fastingDatesOfLunarMonth, toKey, lunarOf } from '../fasting.js';
-import { permissionState, requestPermission, testNotification, upcomingNotifications, buildICS, isStandalone, isIOS } from '../notify.js';
+import { permissionState, requestPermission, testNotification, pushSupported, getPushStatus, schedulePushTest, upcomingNotifications, buildICS, isStandalone, isIOS } from '../notify.js';
 import { esc, toast, download, WEEKDAYS, dmy } from '../ui.js';
 import { showPermissionHelp, showInstallHelp } from './today.js';
 
@@ -32,6 +32,13 @@ function monthStats(n = 6) {
     ref = new Date(prev.year, prev.month - 1, prev.day);
   }
   return out;
+}
+
+function pushLine() {
+  const p = getPushStatus();
+  if (p.ok) return '☁️ Nhắc từ máy chủ: đang bật — thông báo đến đúng giờ kể cả khi app đã đóng.';
+  if (p.error) return `☁️ Nhắc từ máy chủ: chưa kết nối (${esc(p.error)}). App vẫn nhắc khi đang mở.`;
+  return '☁️ Nhắc từ máy chủ: đang kết nối…';
 }
 
 export function renderSettings(root) {
@@ -69,7 +76,13 @@ export function renderSettings(root) {
           : perm === 'denied'
             ? '<button class="btn btn--glass btn--block" id="perm-help"><span class="ms">help</span>Hướng dẫn bật lại thông báo</button>'
             : perm === 'granted'
-              ? '<button class="btn btn--glass btn--block" id="test"><span class="ms">notifications</span>Gửi thử một thông báo</button>'
+              ? `<button class="btn btn--glass btn--block" id="test"><span class="ms">notifications</span>Gửi thử một thông báo</button>
+                 ${
+                   pushSupported()
+                     ? `<p class="small muted">${pushLine()}</p>
+                 <button class="btn btn--glass btn--block" id="push-test"><span class="ms">schedule_send</span>Thử nhắc khi đóng app (sau 2 phút)</button>`
+                     : ''
+                 }`
               : ''
       }
       ${
@@ -159,6 +172,11 @@ export function renderSettings(root) {
   root.querySelector('#test')?.addEventListener('click', async () => {
     await testNotification();
     toast('Đã gửi thông báo thử');
+  });
+  root.querySelector('#push-test')?.addEventListener('click', async () => {
+    const r = await schedulePushTest(2);
+    toast(r?.ok ? 'Đã hẹn — đóng app, 2 phút nữa sẽ có thông báo' : `Chưa hẹn được: ${r?.error || 'không hỗ trợ'}`);
+    rerender();
   });
   root.querySelector('#install')?.addEventListener('click', async () => {
     if (installPrompt) {
