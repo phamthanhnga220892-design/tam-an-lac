@@ -1,5 +1,5 @@
 // POST /api/subscribe — lưu push subscription + lịch nhắc 45 ngày tới (đầu ra upcomingNotifications).
-import { pipeline, idOf, subKey, sentKey, SUBS, KEEP_SECONDS } from './_redis.js';
+import { redis, pipeline, idOf, subKey, sentKey, SUBS, KEEP_SECONDS, LAST_DISPATCH } from './_redis.js';
 
 const MAX_ITEMS = 1000;
 const str = (v, max) => (typeof v === 'string' ? v.slice(0, max) : '');
@@ -21,8 +21,13 @@ function cleanSchedule(list) {
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
-    // Client lấy public key (để không phải nhúng cứng khi đổi khoá)
-    return res.status(200).json({ publicKey: process.env.VAPID_PUBLIC_KEY || null });
+    // Client lấy public key + lần cuối cron gọi /api/dispatch (để biết nhắc nền có đang chạy)
+    let lastDispatch = null;
+    try {
+      const raw = await redis('GET', LAST_DISPATCH);
+      lastDispatch = raw ? JSON.parse(raw).at : null;
+    } catch {}
+    return res.status(200).json({ publicKey: process.env.VAPID_PUBLIC_KEY || null, lastDispatch, now: Date.now() });
   }
   if (req.method !== 'POST') return res.status(405).json({ error: 'method' });
 

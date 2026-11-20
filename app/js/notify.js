@@ -204,11 +204,22 @@ export async function syncPush(list = upcomingNotifications(new Date(), 45)) {
     try {
       localStorage.setItem(PUSH_ENDPOINT_KEY, json.endpoint);
     } catch {}
-    pushStatus = { ok: true, next: out.next, error: null };
+    pushStatus = { ok: true, next: out.next, error: null, cronAgo: await cronAgo() };
   } catch (err) {
     pushStatus = { ok: false, next: null, error: err.message };
   }
   return pushStatus;
+}
+
+/** Số phút từ lần cuối máy chủ chạy /api/dispatch (null = chưa từng chạy / không rõ) */
+async function cronAgo() {
+  try {
+    const r = await fetch('api/subscribe', { cache: 'no-store' });
+    const j = await r.json();
+    return j.lastDispatch ? Math.max(0, Math.round((j.now - j.lastDispatch) / 60000)) : null;
+  } catch {
+    return undefined;
+  }
 }
 
 function pushTestItem(fireAt) {

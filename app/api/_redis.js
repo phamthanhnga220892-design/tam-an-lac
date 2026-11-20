@@ -7,6 +7,7 @@ const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TO
 export const SUBS = 'tt:subs'; // set các id subscription
 export const subKey = (id) => `tt:sub:${id}`; // JSON {subscription, schedule, updatedAt}
 export const sentKey = (id) => `tt:sent:${id}`; // hash {notificationId: timestamp}
+export const LAST_DISPATCH = 'tt:lastDispatch'; // JSON {at, subs, sent, failed, removed} — nhịp tim của cron
 export const KEEP_SECONDS = 60 * 24 * 3600; // subscription không gửi lại 60 ngày thì tự hết hạn
 
 export function idOf(endpoint) {

@@ -68,6 +68,8 @@ Cron của Vercel gói Hobby chỉ chạy 1 lần/ngày nên dùng [cron-job.org
 4. Bật **Notify me when execution fails** (nên bật) → **Create**.
 5. Bấm **Test run**: kết quả `200` và JSON dạng `{"subs":1,"sent":0,"failed":0,"removed":0}` là đúng; `401` là sai secret.
 
+Kiểm tra cron còn chạy: mở `https://tam-an-lac.vercel.app/api/subscribe` — `lastDispatch` là thời điểm (ms) lần cuối `/api/dispatch` chạy thành công; `null` hoặc cách `now` quá 5 phút nghĩa là job cron-job.org không chạy. Màn *Cài đặt* cũng báo ⚠️ khi đó.
+
 Thử tay: `curl -H "Authorization: Bearer <DISPATCH_SECRET>" https://tam-an-lac.vercel.app/api/dispatch`.
 
 Dữ liệu trên Redis: `tt:subs` (set), `tt:sub:<id>` (subscription + lịch, tự hết hạn sau 60 ngày không mở app), `tt:sent:<id>` (các nhắc đã gửi, chống gửi trùng).

@@ -1,6 +1,6 @@
 // POST/GET /api/dispatch — gọi mỗi phút từ cron-job.org (có secret). Gửi Web Push cho các lời nhắc đến hạn.
 import webpush from 'web-push';
-import { redis, pipeline, subKey, sentKey, SUBS, KEEP_SECONDS } from './_redis.js';
+import { redis, pipeline, subKey, sentKey, SUBS, KEEP_SECONDS, LAST_DISPATCH } from './_redis.js';
 
 const LATE_MS = 6 * 60 * 60 * 1000; // lỡ (cron chết, máy chủ lỗi) quá 6 giờ thì bỏ, giống nhắc bù phía app
 
@@ -17,6 +17,17 @@ async function sendOne(subscription, n) {
   return webpush.sendNotification(subscription, payload, { TTL: ttl, urgency: 'high' });
 }
 
+// Ghi nhịp tim để app (Cài đặt) và log Vercel thấy cron còn chạy hay không
+async function done(res, now, report) {
+  console.log('dispatch', JSON.stringify(report));
+  try {
+    await redis('SET', LAST_DISPATCH, JSON.stringify({ at: now, ...report }), 'EX', 7 * 24 * 3600);
+  } catch (err) {
+    console.error('ghi nhịp tim lỗi', err.message);
+  }
+  return res.status(200).json(report);
+}
+
 export default async function handler(req, res) {
   if (!authorized(req)) return res.status(401).json({ error: 'unauthorized' });
   webpush.setVapidDetails(
@@ -30,7 +41,7 @@ export default async function handler(req, res) {
   try {
     const ids = (await redis('SMEMBERS', SUBS)) || [];
     report.subs = ids.length;
-    if (!ids.length) return res.status(200).json(report);
+    if (!ids.length) return done(res, now, report);
     const records = await pipeline(ids.map((id) => ['GET', subKey(id)]));
 
     for (let i = 0; i < ids.length; i++) {
@@ -66,7 +77,7 @@ export default async function handler(req, res) {
       }
       await redis('EXPIRE', sentKey(id), KEEP_SECONDS);
     }
-    return res.status(200).json(report);
+    return done(res, now, report);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: err.message, ...report });

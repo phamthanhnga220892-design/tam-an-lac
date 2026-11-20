@@ -36,6 +36,8 @@ function monthStats(n = 6) {
 
 function pushLine() {
   const p = getPushStatus();
+  if (p.ok && p.cronAgo === null) return '⚠️ Đã đăng ký nhắc từ máy chủ, nhưng máy chủ <b>chưa từng được đánh thức</b> (job cron-job.org chưa chạy) — khi app đóng sẽ không có thông báo.';
+  if (p.ok && p.cronAgo > 5) return `⚠️ Máy chủ nhắc đã ngừng ${p.cronAgo} phút (job cron-job.org không chạy) — khi app đóng sẽ không có thông báo.`;
   if (p.ok) return '☁️ Nhắc từ máy chủ: đang bật — thông báo đến đúng giờ kể cả khi app đã đóng.';
   if (p.error) return `☁️ Nhắc từ máy chủ: chưa kết nối (${esc(p.error)}). App vẫn nhắc khi đang mở.`;
   return '☁️ Nhắc từ máy chủ: đang kết nối…';
