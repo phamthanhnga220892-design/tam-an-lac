@@ -27,7 +27,7 @@ PWA cần HTTPS. Đẩy thư mục `app/` lên một host tĩnh bất kỳ (Verc
 | `js/fasting.js` | Quy tắc ngày chay dạng cấu hình: Thập Trai / Lục Trai / Nhị Trai, tháng đủ/thiếu — R2, BR1–BR4 |
 | `js/events.js` | Ngày Phật pháp gợi ý sẵn + so khớp ngày âm (dời 30→29, bỏ tháng nhuận) — R7, BR5, BR6 |
 | `js/store.js` | Lưu cục bộ (localStorage), xuất/nhập JSON — R8, R10 |
-| `js/notify.js` | Lập lịch nhắc, gộp thông báo trùng ngày, huy hiệu icon, xuất `.ics` — R5, R6, R11, BR7 |
+| `js/notify.js` | Lập lịch nhắc, gộp thông báo trùng ngày, huy hiệu icon — R5, R6, R11, BR7 |
 | `js/views/*` | 4 màn: Hôm nay, Lịch âm, Sự kiện, Cài đặt — R3, R4, R7, R9 |
 | `sw.js` | Chạy offline, nhận Web Push, nhắc nền (Periodic Sync), nút "Đã ăn chay" trên thông báo |
 | `api/subscribe.js` | `POST /api/subscribe`: lưu push subscription + lịch nhắc 45 ngày vào Upstash Redis |
@@ -36,12 +36,11 @@ PWA cần HTTPS. Đẩy thư mục `app/` lên một host tĩnh bất kỳ (Verc
 
 ## Về nhắc khi app đóng (Open question #2 của PRD)
 
-App dùng 4 lớp, lớp sau dự phòng cho lớp trước:
+App dùng 3 lớp, lớp sau dự phòng cho lớp trước:
 
 1. **Web Push từ máy chủ (chính)**: khi đã cho phép thông báo, app đăng ký push và gửi lịch nhắc 45 ngày tới lên `/api/subscribe` (gửi lại mỗi khi mở app hoặc đổi cài đặt). cron-job.org gọi `/api/dispatch` mỗi phút → thông báo đến trong ≤ 1 phút so với giờ hẹn, kể cả khi app đã đóng. Chạy trên iPhone (iOS 16.4+, đã thêm vào MH chính) và Android.
 2. **App đang mở / vừa mở lại**: hẹn giờ trong app, nhắc bù nếu lỡ trong 6 giờ gần nhất (cùng `tag` với push nên không hiện trùng).
 3. **Android đã cài PWA**: Periodic Background Sync (Chrome tự quyết tần suất).
-4. **Không cần mạng**: *Cài đặt → Xuất lịch nhắc (.ics)* vào Lịch của điện thoại.
 
 Kiểm tra: *Cài đặt → Thử nhắc khi đóng app (sau 2 phút)* → đóng hẳn app → chờ thông báo "Thử nhắc nền".
 

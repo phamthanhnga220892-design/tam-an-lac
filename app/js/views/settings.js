@@ -1,9 +1,8 @@
-// R5, R6, R9, R10 — Cài đặt nhắc, quyền thông báo, thống kê, dữ liệu
-import { getState, update, uid, exportJSON, importJSON } from '../store.js';
-import { jdToDate, lunarMonthName, canChiYear } from '../lunar.js';
-import { FASTING_MODES, fastingDatesOfLunarMonth, toKey, lunarOf } from '../fasting.js';
-import { permissionState, requestPermission, testNotification, pushSupported, getPushStatus, schedulePushTest, upcomingNotifications, buildICS, isStandalone, isIOS } from '../notify.js';
-import { esc, toast, download, WEEKDAYS, dmy } from '../ui.js';
+// R5, R6 — Cài đặt: chế độ ăn chay, quyền thông báo, mốc giờ nhắc
+import { getState, update, uid } from '../store.js';
+import { FASTING_MODES } from '../fasting.js';
+import { permissionState, requestPermission, testNotification, pushSupported, getPushStatus, schedulePushTest, upcomingNotifications, isStandalone, isIOS } from '../notify.js';
+import { esc, toast, WEEKDAYS, dmy } from '../ui.js';
 import { showPermissionHelp, showInstallHelp } from './today.js';
 
 let installPrompt = null;
@@ -18,21 +17,6 @@ const BEFORE_OPTS = [
   [2, 'Trước 2 ngày'],
   [3, 'Trước 3 ngày'],
 ];
-
-function monthStats(n = 6) {
-  const state = getState();
-  const out = [];
-  let ref = new Date();
-  for (let i = 0; i < n; i++) {
-    const l = lunarOf(ref);
-    const days = fastingDatesOfLunarMonth(ref, state.settings.mode);
-    const done = days.filter((d) => state.log[toKey(d.date)]).length;
-    out.push({ label: `Tháng ${lunarMonthName(l.month, l.leap)} ${canChiYear(l.year)}`, done, total: days.length });
-    const prev = jdToDate(l.monthStartJd - 1);
-    ref = new Date(prev.year, prev.month - 1, prev.day);
-  }
-  return out;
-}
 
 function pushLine() {
   const p = getPushStatus();
@@ -54,7 +38,6 @@ export function renderSettings(root) {
     unsupported: ['Không hỗ trợ', 'chip--lotus', 'notifications_off'],
   }[perm];
   const upcoming = upcomingNotifications(new Date(), 30).filter((n) => n.fireAt > Date.now()).slice(0, 3);
-  const stats = monthStats();
 
   root.innerHTML = `
     <section class="card">
@@ -126,34 +109,6 @@ export function renderSettings(root) {
       }
     </section>
 
-    <section class="card">
-      <div class="card__head"><div class="card__title"><span class="ms">event</span><h3>Nhắc qua Lịch điện thoại</h3></div></div>
-      <p class="small muted">Phương án chắc chắn nhất khi app đóng: tải file lịch (.ics) gồm ngày chay và ngày Phật pháp 12 tháng tới, kèm chuông báo theo các mốc giờ ở trên, rồi mở để thêm vào ứng dụng Lịch (Google Calendar, Lịch iPhone).</p>
-      <button class="btn btn--primary btn--block" id="ics"><span class="ms">download</span>Xuất lịch nhắc (.ics)</button>
-    </section>
-
-    <section class="card">
-      <div class="card__head"><div class="card__title"><span class="ms">insights</span><h3>Thống kê giữ trai</h3></div></div>
-      ${stats
-        .map(
-          (m) => `<div style="display:flex;flex-direction:column;gap:4px">
-        <div class="month-summary__row"><span>${m.label}</span><b style="color:var(--primary)">${m.done}/${m.total}</b></div>
-        <div class="stat-bar"><i style="width:${m.total ? (m.done / m.total) * 100 : 0}%"></i></div>
-      </div>`,
-        )
-        .join('')}
-    </section>
-
-    <section class="card">
-      <div class="card__head"><div class="card__title"><span class="ms">database</span><h3>Dữ liệu</h3></div></div>
-      <p class="small muted">Dữ liệu chỉ lưu trên máy này. Xuất file sao lưu để không mất khi đổi máy.</p>
-      <div class="sheet__actions">
-        <button class="btn btn--glass btn--sm" id="export"><span class="ms" style="font-size:16px">upload_file</span>Xuất JSON</button>
-        <button class="btn btn--glass btn--sm" id="import"><span class="ms" style="font-size:16px">download</span>Nhập JSON</button>
-      </div>
-      <input type="file" id="import-file" accept="application/json,.json" hidden />
-    </section>
-
     <p class="tiny faint" style="text-align:center">Thập Trai Thanh Tịnh v1.0 • Âm lịch theo thuật toán Hồ Ngọc Đức, múi giờ UTC+7 • Tính offline</p>
   `;
 
@@ -209,26 +164,5 @@ export function renderSettings(root) {
   root.querySelector('#add-r').addEventListener('click', () => {
     update((st) => st.settings.reminders.push({ id: uid(), daysBefore: 1, time: '20:00', enabled: true }));
     rerender();
-  });
-
-  root.querySelector('#ics').addEventListener('click', () => {
-    download('thap-trai.ics', buildICS(12), 'text/calendar;charset=utf-8');
-    toast('Đã tạo file lịch — mở file để thêm vào Lịch');
-  });
-  root.querySelector('#export').addEventListener('click', () => {
-    download(`thap-trai-sao-luu-${toKey(new Date())}.json`, exportJSON(), 'application/json');
-  });
-  const fileInput = root.querySelector('#import-file');
-  root.querySelector('#import').addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', async () => {
-    const f = fileInput.files[0];
-    if (!f) return;
-    try {
-      importJSON(await f.text());
-      toast('Đã nhập dữ liệu ✓');
-      rerender();
-    } catch (err) {
-      toast(`Không nhập được: ${err.message}`);
-    }
   });
 }

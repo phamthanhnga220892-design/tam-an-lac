@@ -1,5 +1,5 @@
 // Service Worker: chạy offline + nhắc nền (Web Push, periodic sync) + xử lý bấm thông báo.
-const VERSION = 'v1.1.1';
+const VERSION = 'v1.1.3';
 const CORE = `thaptrai-core-${VERSION}`;
 const RUNTIME = 'thaptrai-runtime';
 const SCHEDULE = 'thaptrai-schedule';

@@ -383,6 +383,13 @@ button.row { width: 100%; text-align: left; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-.reminder-row { display: grid; grid-template-columns: 7.6em minmax(0, 1fr) auto 28px; gap: 6px; }
+/* Mốc giờ nhắc: giờ + nhắc trước chia đều, công tắc + xoá cố định bên phải */
+.reminder-row { display: grid; grid-template-columns: minmax(0, 6.4em) minmax(0, 1fr) 44px 28px; gap: 8px; }
 .reminder-row .icon-btn { width: 28px; height: 28px; }
-.reminder-row .input, .reminder-row .select { padding: 0 6px; font-size: 13px; min-width: 0; }
+.reminder-row .input, .reminder-row .select { display: block; width: 100%; max-width: 100%; min-width: 0; padding: 0 8px; font-size: 14px; }
+/* Safari iOS: ô time có độ rộng tối thiểu riêng và tràn sang ô bên cạnh nếu giữ giao diện gốc */
+.reminder-row input[type='time'] { -webkit-appearance: none; appearance: none; line-height: 40px; text-align: left; }
+.reminder-row input[type='time']::-webkit-date-and-time-value { text-align: left; margin: 0; }
+.reminder-row input[type='time']::-webkit-calendar-picker-indicator { display: none; }
+.reminder-row .select { -webkit-appearance: none; appearance: none; padding-right: 24px; text-overflow: ellipsis;
+  background: rgba(255,255,255,.75) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2340484f' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 8px center; }
